@@ -1,4 +1,4 @@
-// *** List_v0.1
+// *** List_v0.2
 #include <iostream>
 
 using namespace std;
@@ -27,7 +27,7 @@ struct List
 void AddObject(List* _Next, const int& _Value);
 void Output(List* _Next);
 
-void insret(List* _Next, const int& _Value, const int& _where);
+void insert(List* _Next, const int& _Value, const int& _where);
 void erase(List* _Next, const int& _where);
 
 int main(void)
@@ -67,6 +67,7 @@ void AddObject(List* _Next, const int& _Value)
 
 void Output(List* _Next)
 {
+	// 출력 후 호출 하면 내림차순
 	// 출력
 	cout << _Next->Value << endl;
 
@@ -74,11 +75,18 @@ void Output(List* _Next)
 	if (_Next->Back != nullptr)
 		Output(_Next->Back);
 	
-	// 출력 후 호출 하면 내림차순
 	// 호출 후 출력 하면 오름차순
+	/*
+	// 호출
+	if (_Next->Back != nullptr)
+		Output(_Next->Back);
+
+	// 출력
+	cout << _Next->Value << endl;
+	*/
 }
 
-void insret(List* _Next, const int& _Value, const int& _where)
+void insert(List* _Next, const int& _Value, const int& _where)
 {
 
 }
