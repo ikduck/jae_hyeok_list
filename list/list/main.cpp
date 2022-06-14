@@ -21,27 +21,33 @@ using namespace std;
 
 struct List
 {
-	// List* front;
+	// List* front; 가 있으면 양방향 없으면 단방향
+	List* Front;
 	int	Value;
 	List* Back;
 };
 
-// erase에서 사용
-// 구조체에 적어주면 필요없음
-List* Front = nullptr;
-
 // 전방선언과 같은 위치에 넣어두는게 매너임
-void push_back(List* _Next, const int& _Value);
+void push_back(List* _Current, const int& _Value);
+void pop_back(List* _Current);
 
-void insert(List* _Next, const int _Where, const int& _Value);
-void erase(List* _Next, const int _Where);
+void insert(List* _Current, const int _Where, const int& _Value);
+void erase(List* _Current, const int _Where);
 
-void Output(List* _Next);
+void OutputA(List* _Current);
+void OutputB(List* _Current);
+
+
+// push_front pop_back 은 클래스구조로 다시만들어야해서 안함
+// NumberList의 값을 반환형태로 줘야함
+
+List* End = nullptr;
 
 int main(void)
 {
 	List* NumberList = new List;
 
+	NumberList->Front = nullptr;
 	NumberList->Value = 0;
 	NumberList->Back = nullptr;
 
@@ -52,65 +58,109 @@ int main(void)
 	}
 
 	insert(NumberList, 2, 15);
-	Output(NumberList);
+	OutputA(NumberList);
 
 
 	erase(NumberList, 2);
 	// for (int i = 0; i < 10; ++i)
-	Output(NumberList);
+	OutputA(NumberList);
+
+	system("pause");
+	system("cls");
+
+	OutputB(End);
+
+	pop_back(NumberList);
+	OutputA(NumberList);
 
 	return 0;
 }
 
-void push_back(List* _Next, const int& _Value)
+void push_back(List* _Current, const int& _Value)
 {
-	if (_Next->Back == nullptr)
+	if (_Current->Back == nullptr)
 	{
 		List* Temp = new List;
+		
+		Temp->Front = _Current;
 		Temp->Value = _Value;
 		Temp->Back = nullptr;
 
-		_Next->Back = Temp;
+		_Current->Back = Temp;
+
+		End = Temp;
 	}
 	else
 	{
-		push_back(_Next->Back, _Value);
+		push_back(_Current->Back, _Value);
 	}
 }
 
-void insert(List* _Next, const int _Where, const int& _Value)
+void pop_back(List* _Current)
+{
+	if (_Current->Back == nullptr)
+	{
+		End = _Current->Front;
+
+		// 마지막 값을 가리키던 주소값이 쓰레기값이되서 없애줘야함
+		_Current->Front->Back = nullptr;
+
+		delete _Current;
+		_Current = nullptr;
+
+	}
+	else
+	{
+		pop_back(_Current->Back);
+	}
+}
+
+void insert(List* _Current, const int _Where, const int& _Value)
 {
 	if (_Where == 1)
 	{
 		List* Temp = new List;
 
+		Temp->Front = _Current;
 		Temp->Value = _Value;
-		Temp->Back = _Next->Back;
+		Temp->Back = _Current->Back;
 
-		_Next->Back = Temp;
+		_Current->Back = Temp;
 
 	}
 	else
 	{
-		insert(_Next->Back, _Where + (-1), _Value);
+		insert(_Current->Back, _Where + (-1), _Value);
 	}
 }
 
+// erase에서 사용
+// 구조체에 적어주면 필요없어짐
+// List* Front = nullptr;
 
-void erase(List* _Next, const int _Where)
+void erase(List* _Current, const int _Where)
 {
-	// 안됨 왜안되는지 모르겟음....
+	// 스택 구조상 문제가 터지면 이전 함수에서 
+
+	// 안됨
 	/*
 	if (_Where == 1)
 	{
-		List* Temp = _Next;
-		_Next = _Next->Back;
+		// List* Temp = _Next;
+		// _Next = _Next->Back;
 
+		// 구조체여서 그런지 Temp->Back과 _Current->Back의 주소값(&)이 달라서 터짐
+
+		List* Temp = new list;  // 를 사용하면 해결할수 있음
+
+		// 현재값을 지워서 문제가 발생
 		delete Temp;
 		Temp = nullptr;
 	}
-	*/
-	
+	// 문제가 한두가지가 아니다!
+	*/ 
+
+	// 첫 번째와 마지막 값을 
 	if (_Where == 0)
 	{
 		// 됨 
@@ -122,36 +172,49 @@ void erase(List* _Next, const int _Where)
 		Temp = nullptr;
 		*/
 	
-		Front->Back = _Next->Back;
+		// Front->Back = _Current->Back;
+		
+		// 순서에 문제없음
+		_Current->Back->Front = _Current->Front;
+		_Current->Front->Back = _Current->Back;
 
-		delete _Next;
-		_Next = nullptr;
+		delete _Current;
+		_Current = nullptr;
 		
 	}
 	else
 	{
-		Front = _Next;
-		erase(_Next->Back, _Where + (-1));
+		// Front = _Current;
+		erase(_Current->Back, _Where + (-1));
 	}
 }
 
-void Output(List* _Next)
+void OutputA(List* _Current)
 {
 	// 출력 후 호출 하면 내림차순
 	// 출력
-	cout << _Next->Value << endl;
+	cout << _Current->Value << endl;
 
 	// 호출
-	if (_Next->Back != nullptr)
-		Output(_Next->Back);
+	if (_Current->Back != nullptr)
+		OutputA(_Current->Back);
 
 	// 호출 후 출력 하면 오름차순
 	/*
 	// 호출
-	if (_Next->Back != nullptr)
-		Output(_Next->Back);
+	if (_Current->Back != nullptr)
+		Output(_Current->Back);
 
 	// 출력
-	cout << _Next->Value << endl;
+	cout << _Current->Value << endl;
 	*/
+}
+
+void OutputB(List* _Current)
+{
+	cout << _Current->Value << endl;
+
+	if (_Current->Front != nullptr)
+		OutputB(_Current->Front);
+
 }
