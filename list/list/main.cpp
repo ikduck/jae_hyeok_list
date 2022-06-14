@@ -218,3 +218,8 @@ void OutputB(List* _Current)
 		OutputB(_Current->Front);
 
 }
+
+// stack 큐 혼자 공부하기 간접적으로다함(단방향)
+// map 예습하기
+// list의 사용방법은 vector과 동일함
+// list 와 vector의 특징과 사용법 
