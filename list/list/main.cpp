@@ -1,4 +1,4 @@
-// *** List_v0.2
+// *** List_v0.3
 #include <iostream>
 
 using namespace std;
@@ -144,8 +144,6 @@ void Output(List* _Next)
 	// 호출
 	if (_Next->Back != nullptr)
 		Output(_Next->Back);
-
-
 
 	// 호출 후 출력 하면 오름차순
 	/*
