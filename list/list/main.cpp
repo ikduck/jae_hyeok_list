@@ -40,7 +40,6 @@ void erase(List* _Current, const int _Where);
 void OutputA(List* _Current);
 void OutputB(List* _Current);
 
-
 // push_front pop_back 은 클래스구조로 다시만들어야해서 안함
 // NumberList의 값을 반환형태로 줘야함
 
@@ -226,3 +225,6 @@ void OutputB(List* _Current)
 // map 예습하기
 // list의 사용방법은 vector과 동일함
 // list 와 vector의 특징과 사용법 
+
+// 6월 20일 13시 ~ 18시 한달동안
+// 그이후는 언제가될지는 모름 15시 ~ 18시 
